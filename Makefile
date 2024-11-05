@@ -1,13 +1,13 @@
 # set current revision
-REVISION ?= REV16_7
+REVISION ?= REV0_1
 
 # targets
-TARGETS      = A
+TARGETS      = SlotZ
 MCUS         = H L
 FETON_DELAYS = 0 5 10 15 20 25 30 40 50 70 90
 
 # example single target
-VARIANT     ?= A
+VARIANT     ?= SlotZ
 MCU         ?= H
 FETON_DELAY ?= 5
 
@@ -37,14 +37,12 @@ LX51 = $(WINE) $(LX51_BIN)
 OX51 = $(WINE) $(OX51_BIN)
 
 # set up flags
-#AX51_FLAGS = DEBUG MACRO NOMOD51 COND SYMBOLS PAGEWIDTH(120) PAGELENGTH(65)
-AX51_FLAGS = MACRO NOMOD51 COND SYMBOLS PAGEWIDTH(120) PAGELENGTH(65)
+AX51_FLAGS = DEBUG MACRO NOMOD51 COND SYMBOLS PAGEWIDTH(120) PAGELENGTH(65)
 LX51_FLAGS = PAGEWIDTH (120) PAGELENGTH (65)
 
 # set up sources
-#ASM_SRC = SlotZ_$(REVISION).asm
-ASM_SRC = SlotZ_v$(REVISION).asm
-ASM_INC = $(TARGETS:=.inc) SlotZBootLoad.inc SlotZPgm.inc SI_EFM8BB1_Defs.inc SI_EFM8BB2_Defs.inc
+ASM_SRC = SlotZ.asm
+ASM_INC = $(TARGETS:=.inc)  SlotZBootLoad.inc SlotZPgm.inc SI_EFM8BB1_Defs.inc SI_EFM8BB2_Defs.inc
 
 # check that wine/simplicity studio is available
 EXECUTABLES = $(WINE_BIN) $(AX51_BIN) $(LX51_BIN) $(OX51_BIN) 
@@ -74,13 +72,14 @@ $(OUTPUT_DIR)/$(1)_$(2)_$(3)_$(REVISION).OBJ : $(ASM_SRC) $(ASM_INC)
                 "DEFINE(FETON_DELAY=$(_FETON_DELAY)) "\
                 "OBJECT($$@) "\
                 "$(AX51_FLAGS)" >> $(_LOG) 2>&1; test $$$$? -lt 2 || tail $(_LOG)
+
 endef
- 
+
 HEX_TARGETS = $(OBJS:.OBJ=.HEX)
 
-EFM8_LOAD_BIN  ?= /home/paulo/Documentos/Autorama/SlotCar/ESC/efm8load/efm8load.py
+EFM8_LOAD_BIN  ?= efm8load.py
 EFM8_LOAD_PORT ?= /dev/ttyUSB0
-EFM8_LOAD_BAUD ?= 38400
+EFM8_LOAD_BAUD ?= 57600
 
 SINGLE_TARGET_HEX = $(OUTPUT_DIR)/$(VARIANT)_$(MCU)_$(FETON_DELAY)_$(REVISION).HEX
 
