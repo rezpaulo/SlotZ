@@ -107,8 +107,8 @@ $NOMOD51
 ; List of enumerated supported ESCs
 
 ;**** **** **** **** ****
-MCU_48MHZ EQU	1
-FETON_DELAY EQU 15	; 20.4ns per step
+;MCU_48MHZ EQU	1
+;FETON_DELAY EQU 15	; 20.4ns per step
 ;ESCNO EQU 1
 
 ;**** **** **** **** ****
